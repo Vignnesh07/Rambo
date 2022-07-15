@@ -98,7 +98,7 @@ public class PlayerMovement : MonoBehaviour {
 
     // Specifying certain rules before player can attack
     public bool canAttack(){
-        return isGrounded() && !onWall();
+        return horizontalInput == 0 && isGrounded() && !onWall();
     }
 
 }
