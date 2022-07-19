@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class PlayerMovement : MonoBehaviour {
 
@@ -7,7 +8,7 @@ public class PlayerMovement : MonoBehaviour {
 
     private Rigidbody2D body;
     private Animator animator;
-    private BoxCollider2D boxCollider;
+    private TilemapCollider2D tilemapCollider;
 
     [SerializeField] private float speed;
     [SerializeField] private float jumpPower;
@@ -19,7 +20,7 @@ public class PlayerMovement : MonoBehaviour {
         // this method checks the player component for type RigidBody2D - then stores inside body variable
         body = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        boxCollider = GetComponent<BoxCollider2D>();
+        tilemapCollider = GetComponent<TilemapCollider2D>();
     }
 
     // Runs on every frame of the game - to detect when player presses left/right
@@ -85,15 +86,18 @@ public class PlayerMovement : MonoBehaviour {
 
     private bool isGrounded(){
         // uses the box (of character) to detect any collision
-        RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0, Vector2.down, 0.1f, groundLayer);
-        return raycastHit.collider != null;
+        RaycastHit2D raycastHit = Physics2D.BoxCast(tilemapCollider.bounds.center, tilemapCollider.bounds.size, 0, Vector2.down, 0.1f, groundLayer);
+        print(tilemapCollider.offset);
+        // return raycastHit.collider != null;
+        return true;
     }
 
     private bool onWall(){
         // uses the box (of wall) to detect any collision
         // only the box projection will change horizontally
-        RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0, new Vector2(transform.localScale.x, 0), 0.1f, wallLayer);
-        return raycastHit.collider != null;
+        RaycastHit2D raycastHit = Physics2D.BoxCast(tilemapCollider.bounds.center, tilemapCollider.bounds.size, 0, new Vector2(transform.localScale.x, 0), 0.1f, wallLayer);
+        // return raycastHit.collider != null;
+        return false;
     }
 
     // Specifying certain rules before player can attack
